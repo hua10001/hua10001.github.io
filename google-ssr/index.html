@@ -1,0 +1,312 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>手把手搭建Google云及配置SSR教程 | 骆驼记</title>
+
+<link rel="shortcut icon" href="https://hua10001.github.io/favicon.ico?v=1659865681477">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://hua10001.github.io/styles/main.css">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"> -->
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/9.12.0/languages//dart.min.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script> -->
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+    
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="/">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            骆驼记
+        </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="changeNavbar">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+            <div class="nav-item">
+                
+                <a href="/" class="menu gt-a-link">
+                    首页
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/notes" class="menu gt-a-link">
+                    笔记
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/travels" class="menu gt-a-link">
+                    游记
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/essay" class="menu gt-a-link">
+                    杂记
+                </a>
+                
+            </div>
+            
+            <div class="nav-item">
+                
+                <a href="/about" class="menu gt-a-link">
+                    关于
+                </a>
+                
+            </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1659865681477"
+                action="/search/">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+<script>
+    /* 移动端导航栏展开/收起切换 */
+    document.getElementById('changeNavbar').onclick = () => {
+        var element = document.getElementById('navbarSupportedContent');
+        if (element.style.display === 'none' || element.style.display === '') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    }
+</script>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    手把手搭建Google云及配置SSR教程
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2022-07-27 ·
+                    </time>
+                    
+                        <a href="https://hua10001.github.io/notes/" class="post-tags">
+                            # 笔记
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p>因在工作上需要处理一些国外业务，最近一直在研究谷歌云(Google Cloud Platform)和甲骨文云，在谷歌云搭建的过程中遇到一些坑，下面分享一些经验并做下mark，方便后续使用。</p>
+<h3 id="一-提前准备工作">一、提前准备工作</h3>
+<p>1.有一个谷歌账号</p>
+<p>2.能够正常访问google.com</p>
+<p>3.已注册Google Cloud Platform</p>
+<p>4.已绑定信用卡并获得新注册用户 300 美金的赠送余额。</p>
+<p>上述4个准备工作比较简单，按网上一般教程处理即可。</p>
+<h3 id="二-实例搭建">二、实例搭建</h3>
+<p>1.登陆谷歌云平台的控制面板。</p>
+<figure data-type="image" tabindex="1"><img src="https://s3.bmp.ovh/imgs/2022/07/26/02aad3670ef5e3ea.png" alt="" loading="lazy"></figure>
+<hr>
+<p>2.打开侧边栏，找到Compute Engine，在弹出的二级菜单中，进入虚拟机实例界面。</p>
+<figure data-type="image" tabindex="2"><img src="https://s3.bmp.ovh/imgs/2022/07/26/73f8e1e09ae1b021.png" alt="" loading="lazy"></figure>
+<hr>
+<p>3.点击创建实例。</p>
+<figure data-type="image" tabindex="3"><img src="https://s3.bmp.ovh/imgs/2022/07/26/4570938de76a1088.png" alt="" loading="lazy"></figure>
+<hr>
+<p>4.名字依自己喜好填，区域我选的洛杉矶，可用区任选，机器配置当然是越便宜好越好，用来科学上学足够了。CPU平台和GPU以及其他选项默认即可！</p>
+<figure data-type="image" tabindex="4"><img src="https://s3.bmp.ovh/imgs/2022/07/26/26b571e11c72172d.png" alt="" loading="lazy"></figure>
+<hr>
+<p>5.点击窗口的更改选项，右侧的启动磁盘里选择自己擅长的系统，我选择的是CentOS7，不过该系统要求的最小磁盘空间是20G，然后费用就会从原来的5刀+增加到7刀+。</p>
+<figure data-type="image" tabindex="5"><img src="https://s3.bmp.ovh/imgs/2022/07/26/8a80fb2330e221b2.png" alt="" loading="lazy"></figure>
+<hr>
+<p>6.身份和API访问权限默认，防火墙的2个选项记得都要勾上，然后点击创建！</p>
+<figure data-type="image" tabindex="6"><img src="https://s3.bmp.ovh/imgs/2022/07/26/fb58327b6d593369.png" alt="" loading="lazy"></figure>
+<hr>
+<p>7.稍稍等那么一、二分钟，即可在实例列表中看到刚刚建好的实例。这时候实例就完全建立好了</p>
+<figure data-type="image" tabindex="7"><img src="https://s3.bmp.ovh/imgs/2022/07/26/69270b8ec8130852.png" alt="" loading="lazy"></figure>
+<hr>
+<h3 id="三-配置实例">三、配置实例</h3>
+<p>1.点击刚刚建好的实例中，SSH右边的小箭头，在弹出来的选项中选择点击「在浏览器窗口中打开」</p>
+<figure data-type="image" tabindex="8"><img src="https://s3.bmp.ovh/imgs/2022/07/26/69270b8ec8130852.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="9"><img src="https://s3.bmp.ovh/imgs/2022/07/26/4a93a6e6a441d074.png" alt="" loading="lazy"></figure>
+<hr>
+<p>2.稍后出现命令行操作界面：</p>
+<figure data-type="image" tabindex="10"><img src="https://s3.bmp.ovh/imgs/2022/07/26/50809556b7376027.png" alt="" loading="lazy"></figure>
+<hr>
+<p>3.在命令行中输入代码：<code>sudo passwd root</code>为 root 用户设置密码，尽量复杂一点，输完后再输一遍确认！</p>
+<figure data-type="image" tabindex="11"><img src="https://s3.bmp.ovh/imgs/2022/07/26/bf291193fc28d7ae.png" alt="" loading="lazy"></figure>
+<hr>
+<p>4.输入代码<code>su root</code>回车，输入密码，使当前用户具备 root 权限。</p>
+<figure data-type="image" tabindex="12"><img src="https://s3.bmp.ovh/imgs/2022/07/26/8a93747d14ce83c7.png" alt="" loading="lazy"></figure>
+<hr>
+<p>5.输入代码<code>vim /etc/ssh/sshd_config</code>来编辑 ssh 服务配置文件</p>
+<figure data-type="image" tabindex="13"><img src="https://s3.bmp.ovh/imgs/2022/07/26/6a45c0044b810161.png" alt="" loading="lazy"></figure>
+<hr>
+<p>6.找到这一行：<code>PermitRootLogin no</code>将默认的「no」改成「yes」</p>
+<figure data-type="image" tabindex="14"><img src="https://s3.bmp.ovh/imgs/2022/07/26/cfa4369b560cf877.png" alt="" loading="lazy"></figure>
+<hr>
+<p>7.找到这一行：<code>PasswordAuthentication no</code>将默认的「no」改成「yes」</p>
+<figure data-type="image" tabindex="15"><img src="https://s3.bmp.ovh/imgs/2022/07/26/e442f1a41e9f25cf.png" alt="" loading="lazy"></figure>
+<hr>
+<p>8.在这里看要不要顺便把 ssh 端口号（Port）改成高端口（范围 10000~65535），避免密码在默认端口被暴力破解，如果不改的话，按 Esc，输入：<code>:wq</code>确认保存并退出。</p>
+<p>9.输入代码<code>/etc/init.d/ssh restart</code> 重新启动 ssh 服务，使更改生效</p>
+<hr>
+<h3 id="四-搭建ssr服务器">四、搭建SSR服务器</h3>
+<p>1.用Xshell连接服务器，输入用户名、密码<br>
+<img src="https://s3.bmp.ovh/imgs/2022/07/27/66da8d0d3ab7e38b.png" alt="Xshell" loading="lazy"></p>
+<figure data-type="image" tabindex="16"><img src="https://s3.bmp.ovh/imgs/2022/07/27/e42c54c610859e53.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="17"><img src="https://s3.bmp.ovh/imgs/2022/07/27/40da3d40b209aa15.png" alt="" loading="lazy"></figure>
+<hr>
+<p>2.输入<code>sudo -i</code>先切换到root用户（截图省略）</p>
+<p>3.依次运行以下4条命令（截图省略）<br>
+　　第1条：<code>yum install -y wget</code><br>
+　　第2条：<code>wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh</code><br>
+　　第3条：<code>chmod +x bbr.sh</code><br>
+　　第4条：<code>./bbr.sh</code></p>
+<p>4.安装完成后，脚本会提示需要重启VPS，输入 y 并回车后重启, 这时Xshell连接也会自动断开。VPS重启可能需要几分钟, 耐心等待一下。重启完成后，再用Xhell重新连接VPS, sudo -i切换到root用户。</p>
+<figure data-type="image" tabindex="18"><img src="https://s3.bmp.ovh/imgs/2022/07/27/e44d4acc159e63ed.png" alt="" loading="lazy"></figure>
+<hr>
+<p>5.验证是否成功安装了最新内核并开启BBR<br>
+　　输入命令：<code>uname -r</code> 查看内核版本，如果返回值含有5.15或以上版本, 就表示OK了.<br>
+　　输入命令：<code>sysctl net.ipv4.tcp_available_congestion_control</code> 返回值一般为：net.ipv4.tcp_available_congestion_control<br>
+　　输入命令：<code>sysctl net.ipv4.tcp_congestion_control</code> 返回值一般为：net.ipv4.tcp_congestion_control = bbr<br>
+　　输入命令：<code>sysctl net.core.default_qdisc</code> 返回值一般为：net.core.default_qdisc = fq<br>
+　　输入命令：<code>lsmod | grep bbr</code> 返回值有 tcp_bbr 模块即说明bbr已启动。<br>
+　　如下图所示：</p>
+<figure data-type="image" tabindex="19"><img src="https://s3.bmp.ovh/imgs/2022/07/27/c98e20579e477f97.png" alt="" loading="lazy"></figure>
+<hr>
+<p>6.依次运行以下3条命令一键部署SSR服务 (一行一个):<br>
+　　第1条：<code>wget --no-check-certificate -O shadowsocks-all.sh https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks-all.sh</code><br>
+　　第2条：<code>chmod +x shadowsocks-all.sh</code><br>
+　　第3条：<code>./shadowsocks-all.sh 2&gt;&amp;1 | tee shadowsocks-all.log</code></p>
+<p>7.出现提示信息, 选择要安装的版本. 推荐选ShadowsocksR, 输入2, 回车<br>
+　　设置密码<br>
+　　设置端口　　可选范围1-65535, 建议4位以上, 同时避免设置为常用端口22, 80, 443等.<br>
+　　选择加密方式 建议选rc4-md5</p>
+<figure data-type="image" tabindex="20"><img src="https://s3.bmp.ovh/imgs/2022/07/27/dd4f6e0b4e51994f.png" alt="" loading="lazy"></figure>
+<hr>
+<p>8.选择协议, 建议选auth_sha1_v4<br>
+　选择混淆方式, 选tls1.2_ticket_auth<br>
+　然后按任意键开始安装.</p>
+<figure data-type="image" tabindex="21"><img src="https://s3.bmp.ovh/imgs/2022/07/27/6b85f3d4b9dc57d4.png" alt="" loading="lazy"></figure>
+<hr>
+<p>9.耐心等待一下, 安装所需时间根据网速, 机器配置等有所区别, 出现类似下图窗口表示安装完成.<br>
+　SSR链接出来了，可以尽情的使用了。<br>
+<img src="https://s3.bmp.ovh/imgs/2022/07/27/684df9ab41e243d5.png" alt="" loading="lazy"></p>
+<hr>
+<h3 id="五-速度实测">五、速度实测</h3>
+<p>实测速度如下图所示，用来看看油管是没有问题的！<br>
+<img src="https://s3.bmp.ovh/imgs/2022/08/05/15097bbf685c4262.png" alt="" loading="lazy"></p>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="https://hua10001.github.io/www04/" class="post-title gt-a-link">
+                    实用网站合集第四期 5个
+                </a>
+            </div>
+        
+
+        
+            <span id="/google-ssr//" class="leancloud_visitors" data-flag-title="手把手搭建Google云及配置SSR教程">
+                <em class="post-meta-item-text">阅读量 </em>
+                <i class="leancloud-visitors-count">0</i>
+            </span>
+        
+
+        
+
+        
+            <script src='https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js'></script>
+
+<style>
+	div#vcomments{
+		width:100%;
+		max-width: 1000px;
+		padding: 2.5%
+	}
+</style>
+
+
+	<div id="vcomments"></div>
+
+<script>
+	new Valine({
+		el: '#vcomments',
+		appId: 'BrSB8DLEQdGYzEtvMQRO0HD0-9Nh9j0Va',
+		appKey: 'WLbvIuRBwWjInp6SCjh4aK9F',
+		avatar: 'wavatar',
+		pageSize: 5,
+		recordIp: false,
+		placeholder: 'Just Go Go',
+		visitor: true,
+	});
+</script>
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">骆驼先生的BLOG</div>
+    <div class="social-container">
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+    </div>
+    <div>
+        Theme <a href="https://github.com/imhanjie/gridea-theme-pure" target="_blank">Pure</a>, Powered by <a
+                href="https://gridea.dev" target="_blank">Gridea</a> | <a href="https://hua10001.github.io/atom.xml" target="_blank">RSS</a>
+    </div>
+</div>
+
+<script>
+  hljs.highlightAll()
+</script>
+
+    </div>
+</div>
+</body>
+</html>
